@@ -1,5 +1,6 @@
 # Compilador C
-Compilador de C
+
+En este README va toda la información para todos que se quiere tener a mano.
 
 ### Branches:
   * Master: Versión estable
@@ -12,14 +13,14 @@ Compilador de C
     - No bloquear las tareas, es decir aceptar -> hacer -> entregar
 
     - Cada uno puede hacer tareas. Las tareas deben ser cortas, idealmente una
-      persona la puede hacer en 2-3 horas. Si es más probablemente conviene partirla
-      en dos tareas.
+      persona la puede terminar en 2-3 horas. Si piensan que se tardaría más
+      probablemente conviene partirla en dos tareas.
 
     - Al crear una tarea ponerle el peso estimado (estrellas). Si quieren también
-      si es "bug", "chore" o "feature".
+      pongan si es "bug", "chore" o "feature".
 
-    - Las tareas se crean en el Backlog, cuando los tomamos se pasan
-      automáticamente al "Current". El sistema mide la velocidad del equipo y mueve
-      las tareas según la velocidad estimada al "Done".
+    - Las tareas se crean en el panel de "Backlog", cuando las tomamos se pasan
+      automáticamente al panel "Current". El sistema mide la velocidad del equipo y
+      mueve las tareas según la velocidad estimada al panel "Done".
 
     - Usar los comentarios de las tareas para todo.
