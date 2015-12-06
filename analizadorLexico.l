@@ -13,7 +13,9 @@ numero [0-9]+
 flotante [0-9]+\.[0-9]+
 lines \n
 spaces " "|\t|\r
+
 %%
+
 {lines} { linesC++; charC = 1;}
 {spaces} { charC++; }
 "int"|"INT" {yylval.sval = yytext; printToken(PR,yytext,charC,linesC); fprintf(yyout,"PR\t\t%d\t\t%d\t\t%s\n",charC,linesC,yytext); charC += strlen(yytext); return INT;}
@@ -49,27 +51,6 @@ spaces " "|\t|\r
 {id} {yylval.sval = yytext; printToken(ID,yytext,charC,linesC); fprintf(yyout,"ID\t\t%d\t\t%d\t\t%s\n",charC,linesC,yytext); charC += strlen(yytext); return ID;}
 {caracter} {yylval.sval = yytext; printToken(CAD,yytext,charC,linesC);charC += strlen(yytext); return CAD;}
 . {printToken(ERR,yytext,charC,linesC); charC +=strlen(yytext);}
+
 %%
 
-int main ( int argc , char ** argv ) {
-    printf("TIPO\t\t\tCARACTER\tLINEA\n");
-    printf("______________________________________________________\n");
-    if ( argc > 1) {
-        FILE * file;
-        file = fopen(argv[1],"r");
-        if (!file) {
-            fprintf(stderr ," No se puede abrir el archivo % s \n",argv[1]);
-            exit(1);
-        }
-        yyin = file;
-    }
-
-    FILE* outputfile = fopen("tsymbols.txt","w");
-    fprintf(outputfile,"Típo\t\tCaracter\t\tLínea\t\tValor\n",charC,linesC,yytext);
-    yyout = outputfile;
-    token = yylex();
-    P();
-    fclose(yyin);
-    fclose(yyout);
-    return 0;
-}
