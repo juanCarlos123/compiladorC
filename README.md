@@ -24,3 +24,5 @@ En este README va toda la información para todos que se quiere tener a mano.
       mueve las tareas según la velocidad estimada al panel "Done".
 
     - Usar los comentarios de las tareas para todo.
+
+    TEST
