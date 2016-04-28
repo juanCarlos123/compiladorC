@@ -1,0 +1,33 @@
+1)
+    N = { program declaraciones sentencias sentencia tipo lista-variables init sentencias sentencia sentenciaIF sentenciaWhile sentenciaAsig condicion expresion }
+    E = { int float double char bool id numero caracter true false if else while ; , = ( ) { } + - * / % > < ! }
+    S = program
+2)
+    INT --> int
+    FLOAT --> float
+    DOUBLE --> double
+    CHAR --> char
+    BOOL --> bool
+    ID --> id
+    NUM --> numero
+    CAD --> caracter
+    TRUE --> true
+    FALSE --> false
+    IF --> if
+    EL --> else
+    WHI --> while
+    PYC --> ;
+    CO --> ,
+    ASIG --> =
+    PA --> (
+    PC --> )
+    LLA --> {
+    LLC --> }
+    MAS --> +
+    MENOS --> -
+    MUL --> *
+    DIV --> /
+    MOD --> %
+    MAQ --> >
+    MEQ --> <
+    DIF --> !

@@ -1,0 +1,69 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
+\title{Programa 2\\
+	   Analizador Sintáctico}
+
+\author{\textbf{Integrantes:}\\
+		Ahuacatitan García Juan Carlos \\
+		Henkel Magnus}
+
+\begin{document}
+
+\maketitle
+
+
+\section{}
+Decir que elementos gramaticales componen el conjunto de símbolos no  terminales
+y cuáles el de terminales.\\
+
+\noindent
+N = \{ program declaraciones sentencias sentencia tipo lista-variables\\
+\-\hspace{1cm}init sentencias sentencia sentenciaIF sentenciaWhile\\
+\-\hspace{1cm}sentenciaAsig condicion expresion \}\\
+
+\noindent
+E = \{int float double char bool id numero caracter true false if\\
+\-\hspace{1cm}else while ; , = ( ) { } + - * / \% > < ! \}\\
+
+\noindent
+S = program
+
+\section{}
+Asignar un símbolo para representar a cada uno de los elementos no
+terminales, por ejemplo: expresión será o representada por E y programa por P.
+Esto con el motivo de simplificar la notación de la gramática y sea de manejo
+más sencillo.
+\\
+\noindent
+    $INT \rightarrow int\\        $
+    $FLOAT \rightarrow float\\    $
+    $DOUBLE \rightarrow double\\  $
+    $CHAR \rightarrow char\\      $
+    $BOOL \rightarrow bool\\      $
+    $ID \rightarrow id\\          $
+    $NUM \rightarrow numero\\     $
+    $CAD \rightarrow caracter\\   $
+    $TRUE \rightarrow true\\      $
+    $FALSE \rightarrow false\\    $
+    $IF \rightarrow if\\          $
+    $EL \rightarrow else\\        $
+    $WHI \rightarrow while\\      $
+    $PYC \rightarrow ;\\          $
+    $CO \rightarrow ,\\           $
+    $ASIG \rightarrow =\\         $
+    $PA \rightarrow (\\           $
+    $PC \rightarrow )\\           $
+    $LLA \rightarrow \{\\         $
+    $LLC \rightarrow \}\\         $
+    $MAS \rightarrow +\\          $
+    $MENOS \rightarrow - \\       $
+    $MUL \rightarrow *\\          $
+    $DIV \rightarrow /\\          $
+    $MOD \rightarrow \%\\         $
+    $MAQ \rightarrow >\\          $
+    $MEQ \rightarrow <\\          $
+\section{}
+
+\end{document}

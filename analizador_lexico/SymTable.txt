@@ -1,0 +1,28 @@
+  SYMBOL TABLE
+================
+ID  Class  Value
+================
+0   1      @1
+1   1      @arg6
+2   1      @arg5
+3   1      @booleano
+4   1      @md
+5   1      @result
+6   1      @arg4
+7   1      @arg3
+8   1      @arg2
+9   1      @arg1
+10   1      @num2
+11   1      @num1
+12   0      float
+13   0      float
+14   0      int
+15   0      bool
+16   0      if
+17   0      if
+18   0      else
+19   0      true
+20   0      false
+21   0      if
+22   0      true
+23   0      return

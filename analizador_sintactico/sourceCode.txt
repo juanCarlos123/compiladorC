@@ -1,0 +1,30 @@
+    int a = 1, b = 0.0;
+    float b = 12.2;
+    char cad = "cadena";
+    bool b1 = true, b2 = false;
+    
+
+    if (a < 3) {
+      if(a == 4){
+        b = 3;
+      }
+    } else {
+      b = 3.3;
+    }
+
+    while (b > 100.10) {
+        b += 0.2;
+    }
+
+    while ( b != 2) {
+        a = a+b;
+        b = a*c;
+        a = a/c;
+        b = a-c;
+    }
+
+    if ( b2 >= 2 ) {
+        b -= 0.3;
+        a /= 1.2;
+        s %= 2;
+    }

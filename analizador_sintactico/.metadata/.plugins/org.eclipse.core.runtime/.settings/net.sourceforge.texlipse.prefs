@@ -1,0 +1,11 @@
+Okular.command=/usr/bin/X11/okular
+Okular.format=pdf
+Okular.forward=false
+Okular.inverse=no
+eclipse.preferences.version=1
+forceReturnFocusOnInverseSearch=false
+none.command=/usr/bin/okular
+returnFocusOnPreivew=true
+viewerCurrent=Okular
+viewerNames=Okular,acroread,xdvi,yap,itexmac,kdvi,gv,sumatra PDF,none
+viewerNames.TEMP=Okular (/usr/bin/X11/okular),acroread (/usr/bin/acroread),xdvi (/usr/bin/xdvi),yap (),itexmac (/bin/open),kdvi (),gv (),sumatra PDF (),none (/usr/bin/okular)
