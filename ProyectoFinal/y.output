@@ -1,0 +1,2401 @@
+   0  $accept : programa $end
+
+   1  programa : lista_declaraciones
+
+   2  lista_declaraciones : lista_declaraciones declaracion
+   3                      | declaracion
+
+   4  declaracion : declaracion_variables
+   5              | declaracion_funcion
+
+   6  declaracion_variables : tipo lista_variables ';'
+
+   7  lista_variables : lista_variables ',' lista
+   8                  | lista
+
+   9  lista : ID
+  10        | ID '[' ENTERO ']'
+
+  11  tipo : INT
+  12       | FLOAT
+  13       | DOUBLE
+  14       | CHAR
+  15       | VOID
+  16       | tipo_struct
+
+  17  tipo_struct : STRUCT ID '{' cuerpo_struct '}'
+  18              | STRUCT '{' cuerpo_struct '}'
+  19              | STRUCT ID
+
+  20  cuerpo_struct : cuerpo_struct declaracion_variables
+  21                | declaracion_variables
+
+  22  declaracion_funcion : tipo ID '(' parametros ')' bloque
+
+  23  parametros : lista_parametros
+  24             | VOID
+
+  25  lista_parametros : lista_parametros ',' parametro
+  26                   | parametro
+
+  27  parametro : tipo ID '[' ']'
+  28            | tipo ID
+
+  29  bloque : '{' declaraciones_locales lista_sentencias '}'
+
+  30  declaraciones_locales : declaraciones_locales declaracion_variables
+  31                        |
+
+  32  lista_sentencias : lista_sentencias sentencia
+  33                   |
+
+  34  sentencia : sentencia_exp
+  35            | sentencia_if
+  36            | sentencia_while
+  37            | sentencia_do
+  38            | sentencia_switch
+  39            | sentencia_for
+  40            | sentencia_break
+  41            | sentencia_return
+  42            | bloque
+  43            | sentencia_imprime
+  44            | sentencia_lee
+
+  45  sentencia_exp : expresion ';'
+  46                | ';'
+
+  47  sentencia_if : IF '(' expresion ')' sentencia sentencia_else
+
+  48  sentencia_else : ELSE sentencia
+  49                 |
+
+  50  sentencia_while : WHILE '(' expresion ')' sentencia
+
+  51  sentencia_do : DO sentencia WHILE '(' expresion ')' ';'
+
+  52  sentencia_switch : SWITCH '(' ID ')' '{' lista_casos case_default '}'
+
+  53  lista_casos : lista_casos sentencia_case
+  54              | sentencia_case
+
+  55  sentencia_case : CASE ENTERO ':' sentencia sentencia_break
+
+  56  case_default : DEFAULT ':' sentencia sentencia_break
+  57               |
+
+  58  sentencia_for : FOR '(' expresion ';' expresion ';' sentencia_incremento ')' sentencia
+
+  59  sentencia_break : BREAK ';'
+
+  60  sentencia_incremento : ID INC
+  61                       | ID DEC
+
+  62  sentencia_imprime : PRINT '(' expresion ')' ';'
+
+  63  sentencia_lee : SCAN '(' ID ')' ';'
+
+  64  sentencia_return : RETURN ';'
+  65                   | RETURN expresion ';'
+
+  66  expresion : variable operador_asignacion expresion
+  67            | expresion_simple
+
+  68  operador_asignacion : '='
+  69                      | MASIGUAL
+  70                      | MENOSIGUAL
+  71                      | MULTIGUAL
+  72                      | DIVIGUAL
+  73                      | MODUIGUAL
+
+  74  variable : ID
+  75           | ID '[' expresion ']'
+
+  76  expresion_simple : expresion_simple operador_relacional operando
+  77                   | expresion_simple operador_logico operando
+  78                   | operando
+
+  79  operador_logico : AND
+  80                  | OR
+
+  81  operador_relacional : MENIGU
+  82                      | MAYIGU
+  83                      | '<'
+  84                      | '>'
+  85                      | IGUAL
+  86                      | DIF
+
+  87  operando : operando operador_adicion termino
+  88           | termino
+
+  89  operador_adicion : '+'
+  90                   | '-'
+
+  91  termino : termino operador_mul factor
+  92          | factor
+
+  93  operador_mul : '*'
+  94               | '/'
+  95               | '%'
+
+  96  factor : variable
+  97         | llamada
+  98         | '(' expresion ')'
+  99         | ENTERO
+ 100         | REAL
+ 101         | CARACTER
+ 102         | CADENA
+ 103         | DOBLE
+ 104         | '!' expresion
+ 105         | '-' expresion
+
+ 106  llamada : ID '(' argumentos ')'
+
+ 107  argumentos : lista_argumentos
+ 108             |
+
+ 109  lista_argumentos : lista_argumentos ',' expresion
+ 110                   | expresion
+
+state 0
+	$accept : . programa $end  (0)
+
+	INT  shift 1
+	FLOAT  shift 2
+	CHAR  shift 3
+	DOUBLE  shift 4
+	VOID  shift 5
+	STRUCT  shift 6
+	.  error
+
+	programa  goto 7
+	lista_declaraciones  goto 8
+	declaracion  goto 9
+	declaracion_variables  goto 10
+	declaracion_funcion  goto 11
+	tipo  goto 12
+	tipo_struct  goto 13
+
+
+state 1
+	tipo : INT .  (11)
+
+	.  reduce 11
+
+
+state 2
+	tipo : FLOAT .  (12)
+
+	.  reduce 12
+
+
+state 3
+	tipo : CHAR .  (14)
+
+	.  reduce 14
+
+
+state 4
+	tipo : DOUBLE .  (13)
+
+	.  reduce 13
+
+
+state 5
+	tipo : VOID .  (15)
+
+	.  reduce 15
+
+
+state 6
+	tipo_struct : STRUCT . ID '{' cuerpo_struct '}'  (17)
+	tipo_struct : STRUCT . '{' cuerpo_struct '}'  (18)
+	tipo_struct : STRUCT . ID  (19)
+
+	ID  shift 14
+	'{'  shift 15
+	.  error
+
+
+state 7
+	$accept : programa . $end  (0)
+
+	$end  accept
+
+
+state 8
+	programa : lista_declaraciones .  (1)
+	lista_declaraciones : lista_declaraciones . declaracion  (2)
+
+	INT  shift 1
+	FLOAT  shift 2
+	CHAR  shift 3
+	DOUBLE  shift 4
+	VOID  shift 5
+	STRUCT  shift 6
+	$end  reduce 1
+
+	declaracion  goto 16
+	declaracion_variables  goto 10
+	declaracion_funcion  goto 11
+	tipo  goto 12
+	tipo_struct  goto 13
+
+
+state 9
+	lista_declaraciones : declaracion .  (3)
+
+	.  reduce 3
+
+
+state 10
+	declaracion : declaracion_variables .  (4)
+
+	.  reduce 4
+
+
+state 11
+	declaracion : declaracion_funcion .  (5)
+
+	.  reduce 5
+
+
+state 12
+	declaracion_variables : tipo . lista_variables ';'  (6)
+	declaracion_funcion : tipo . ID '(' parametros ')' bloque  (22)
+
+	ID  shift 17
+	.  error
+
+	lista_variables  goto 18
+	lista  goto 19
+
+
+state 13
+	tipo : tipo_struct .  (16)
+
+	.  reduce 16
+
+
+state 14
+	tipo_struct : STRUCT ID . '{' cuerpo_struct '}'  (17)
+	tipo_struct : STRUCT ID .  (19)
+
+	'{'  shift 20
+	ID  reduce 19
+
+
+state 15
+	tipo_struct : STRUCT '{' . cuerpo_struct '}'  (18)
+
+	INT  shift 1
+	FLOAT  shift 2
+	CHAR  shift 3
+	DOUBLE  shift 4
+	VOID  shift 5
+	STRUCT  shift 6
+	.  error
+
+	declaracion_variables  goto 21
+	tipo  goto 22
+	tipo_struct  goto 13
+	cuerpo_struct  goto 23
+
+
+state 16
+	lista_declaraciones : lista_declaraciones declaracion .  (2)
+
+	.  reduce 2
+
+
+state 17
+	lista : ID .  (9)
+	lista : ID . '[' ENTERO ']'  (10)
+	declaracion_funcion : tipo ID . '(' parametros ')' bloque  (22)
+
+	'('  shift 24
+	'['  shift 25
+	';'  reduce 9
+	','  reduce 9
+
+
+state 18
+	declaracion_variables : tipo lista_variables . ';'  (6)
+	lista_variables : lista_variables . ',' lista  (7)
+
+	';'  shift 26
+	','  shift 27
+	.  error
+
+
+state 19
+	lista_variables : lista .  (8)
+
+	.  reduce 8
+
+
+state 20
+	tipo_struct : STRUCT ID '{' . cuerpo_struct '}'  (17)
+
+	INT  shift 1
+	FLOAT  shift 2
+	CHAR  shift 3
+	DOUBLE  shift 4
+	VOID  shift 5
+	STRUCT  shift 6
+	.  error
+
+	declaracion_variables  goto 21
+	tipo  goto 22
+	tipo_struct  goto 13
+	cuerpo_struct  goto 28
+
+
+state 21
+	cuerpo_struct : declaracion_variables .  (21)
+
+	.  reduce 21
+
+
+state 22
+	declaracion_variables : tipo . lista_variables ';'  (6)
+
+	ID  shift 29
+	.  error
+
+	lista_variables  goto 18
+	lista  goto 19
+
+
+state 23
+	tipo_struct : STRUCT '{' cuerpo_struct . '}'  (18)
+	cuerpo_struct : cuerpo_struct . declaracion_variables  (20)
+
+	INT  shift 1
+	FLOAT  shift 2
+	CHAR  shift 3
+	DOUBLE  shift 4
+	VOID  shift 5
+	STRUCT  shift 6
+	'}'  shift 30
+	.  error
+
+	declaracion_variables  goto 31
+	tipo  goto 22
+	tipo_struct  goto 13
+
+
+state 24
+	declaracion_funcion : tipo ID '(' . parametros ')' bloque  (22)
+
+	INT  shift 1
+	FLOAT  shift 2
+	CHAR  shift 3
+	DOUBLE  shift 4
+	VOID  shift 32
+	STRUCT  shift 6
+	.  error
+
+	tipo  goto 33
+	tipo_struct  goto 13
+	parametros  goto 34
+	lista_parametros  goto 35
+	parametro  goto 36
+
+
+state 25
+	lista : ID '[' . ENTERO ']'  (10)
+
+	ENTERO  shift 37
+	.  error
+
+
+state 26
+	declaracion_variables : tipo lista_variables ';' .  (6)
+
+	.  reduce 6
+
+
+state 27
+	lista_variables : lista_variables ',' . lista  (7)
+
+	ID  shift 29
+	.  error
+
+	lista  goto 38
+
+
+state 28
+	tipo_struct : STRUCT ID '{' cuerpo_struct . '}'  (17)
+	cuerpo_struct : cuerpo_struct . declaracion_variables  (20)
+
+	INT  shift 1
+	FLOAT  shift 2
+	CHAR  shift 3
+	DOUBLE  shift 4
+	VOID  shift 5
+	STRUCT  shift 6
+	'}'  shift 39
+	.  error
+
+	declaracion_variables  goto 31
+	tipo  goto 22
+	tipo_struct  goto 13
+
+
+state 29
+	lista : ID .  (9)
+	lista : ID . '[' ENTERO ']'  (10)
+
+	'['  shift 25
+	';'  reduce 9
+	','  reduce 9
+
+
+state 30
+	tipo_struct : STRUCT '{' cuerpo_struct '}' .  (18)
+
+	.  reduce 18
+
+
+state 31
+	cuerpo_struct : cuerpo_struct declaracion_variables .  (20)
+
+	.  reduce 20
+
+
+state 32
+	tipo : VOID .  (15)
+	parametros : VOID .  (24)
+
+	ID  reduce 15
+	')'  reduce 24
+
+
+state 33
+	parametro : tipo . ID '[' ']'  (27)
+	parametro : tipo . ID  (28)
+
+	ID  shift 40
+	.  error
+
+
+state 34
+	declaracion_funcion : tipo ID '(' parametros . ')' bloque  (22)
+
+	')'  shift 41
+	.  error
+
+
+state 35
+	parametros : lista_parametros .  (23)
+	lista_parametros : lista_parametros . ',' parametro  (25)
+
+	','  shift 42
+	')'  reduce 23
+
+
+state 36
+	lista_parametros : parametro .  (26)
+
+	.  reduce 26
+
+
+state 37
+	lista : ID '[' ENTERO . ']'  (10)
+
+	']'  shift 43
+	.  error
+
+
+state 38
+	lista_variables : lista_variables ',' lista .  (7)
+
+	.  reduce 7
+
+
+state 39
+	tipo_struct : STRUCT ID '{' cuerpo_struct '}' .  (17)
+
+	.  reduce 17
+
+
+state 40
+	parametro : tipo ID . '[' ']'  (27)
+	parametro : tipo ID .  (28)
+
+	'['  shift 44
+	')'  reduce 28
+	','  reduce 28
+
+
+state 41
+	declaracion_funcion : tipo ID '(' parametros ')' . bloque  (22)
+
+	'{'  shift 45
+	.  error
+
+	bloque  goto 46
+
+
+state 42
+	lista_parametros : lista_parametros ',' . parametro  (25)
+
+	INT  shift 1
+	FLOAT  shift 2
+	CHAR  shift 3
+	DOUBLE  shift 4
+	VOID  shift 5
+	STRUCT  shift 6
+	.  error
+
+	tipo  goto 33
+	tipo_struct  goto 13
+	parametro  goto 47
+
+
+state 43
+	lista : ID '[' ENTERO ']' .  (10)
+
+	.  reduce 10
+
+
+state 44
+	parametro : tipo ID '[' . ']'  (27)
+
+	']'  shift 48
+	.  error
+
+
+state 45
+	bloque : '{' . declaraciones_locales lista_sentencias '}'  (29)
+	declaraciones_locales : .  (31)
+
+	.  reduce 31
+
+	declaraciones_locales  goto 49
+
+
+state 46
+	declaracion_funcion : tipo ID '(' parametros ')' bloque .  (22)
+
+	.  reduce 22
+
+
+state 47
+	lista_parametros : lista_parametros ',' parametro .  (25)
+
+	.  reduce 25
+
+
+state 48
+	parametro : tipo ID '[' ']' .  (27)
+
+	.  reduce 27
+
+
+state 49
+	bloque : '{' declaraciones_locales . lista_sentencias '}'  (29)
+	declaraciones_locales : declaraciones_locales . declaracion_variables  (30)
+	lista_sentencias : .  (33)
+
+	INT  shift 1
+	FLOAT  shift 2
+	CHAR  shift 3
+	DOUBLE  shift 4
+	VOID  shift 5
+	STRUCT  shift 6
+	REAL  reduce 33
+	DOBLE  reduce 33
+	ENTERO  reduce 33
+	CADENA  reduce 33
+	ID  reduce 33
+	CARACTER  reduce 33
+	FOR  reduce 33
+	WHILE  reduce 33
+	SWITCH  reduce 33
+	BREAK  reduce 33
+	DO  reduce 33
+	SCAN  reduce 33
+	PRINT  reduce 33
+	RETURN  reduce 33
+	IF  reduce 33
+	'-'  reduce 33
+	'!'  reduce 33
+	'('  reduce 33
+	'{'  reduce 33
+	'}'  reduce 33
+	';'  reduce 33
+
+	declaracion_variables  goto 50
+	tipo  goto 22
+	tipo_struct  goto 13
+	lista_sentencias  goto 51
+
+
+state 50
+	declaraciones_locales : declaraciones_locales declaracion_variables .  (30)
+
+	.  reduce 30
+
+
+state 51
+	bloque : '{' declaraciones_locales lista_sentencias . '}'  (29)
+	lista_sentencias : lista_sentencias . sentencia  (32)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	FOR  shift 58
+	WHILE  shift 59
+	SWITCH  shift 60
+	BREAK  shift 61
+	DO  shift 62
+	SCAN  shift 63
+	PRINT  shift 64
+	RETURN  shift 65
+	IF  shift 66
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	'{'  shift 45
+	'}'  shift 70
+	';'  shift 71
+	.  error
+
+	bloque  goto 72
+	sentencia  goto 73
+	sentencia_exp  goto 74
+	sentencia_if  goto 75
+	sentencia_while  goto 76
+	sentencia_do  goto 77
+	sentencia_switch  goto 78
+	sentencia_for  goto 79
+	sentencia_break  goto 80
+	sentencia_return  goto 81
+	sentencia_imprime  goto 82
+	sentencia_lee  goto 83
+	expresion  goto 84
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 52
+	factor : REAL .  (100)
+
+	.  reduce 100
+
+
+state 53
+	factor : DOBLE .  (103)
+
+	.  reduce 103
+
+
+state 54
+	factor : ENTERO .  (99)
+
+	.  reduce 99
+
+
+state 55
+	factor : CADENA .  (102)
+
+	.  reduce 102
+
+
+state 56
+	variable : ID .  (74)
+	variable : ID . '[' expresion ']'  (75)
+	llamada : ID . '(' argumentos ')'  (106)
+
+	'('  shift 91
+	'['  shift 92
+	'='  reduce 74
+	MASIGUAL  reduce 74
+	MENOSIGUAL  reduce 74
+	DIVIGUAL  reduce 74
+	MULTIGUAL  reduce 74
+	MODUIGUAL  reduce 74
+	OR  reduce 74
+	AND  reduce 74
+	IGUAL  reduce 74
+	DIF  reduce 74
+	'<'  reduce 74
+	MENIGU  reduce 74
+	'>'  reduce 74
+	MAYIGU  reduce 74
+	'+'  reduce 74
+	'-'  reduce 74
+	'*'  reduce 74
+	'/'  reduce 74
+	'%'  reduce 74
+	')'  reduce 74
+	']'  reduce 74
+	';'  reduce 74
+	','  reduce 74
+
+
+state 57
+	factor : CARACTER .  (101)
+
+	.  reduce 101
+
+
+state 58
+	sentencia_for : FOR . '(' expresion ';' expresion ';' sentencia_incremento ')' sentencia  (58)
+
+	'('  shift 93
+	.  error
+
+
+state 59
+	sentencia_while : WHILE . '(' expresion ')' sentencia  (50)
+
+	'('  shift 94
+	.  error
+
+
+state 60
+	sentencia_switch : SWITCH . '(' ID ')' '{' lista_casos case_default '}'  (52)
+
+	'('  shift 95
+	.  error
+
+
+state 61
+	sentencia_break : BREAK . ';'  (59)
+
+	';'  shift 96
+	.  error
+
+
+state 62
+	sentencia_do : DO . sentencia WHILE '(' expresion ')' ';'  (51)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	FOR  shift 58
+	WHILE  shift 59
+	SWITCH  shift 60
+	BREAK  shift 61
+	DO  shift 62
+	SCAN  shift 63
+	PRINT  shift 64
+	RETURN  shift 65
+	IF  shift 66
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	'{'  shift 45
+	';'  shift 71
+	.  error
+
+	bloque  goto 72
+	sentencia  goto 97
+	sentencia_exp  goto 74
+	sentencia_if  goto 75
+	sentencia_while  goto 76
+	sentencia_do  goto 77
+	sentencia_switch  goto 78
+	sentencia_for  goto 79
+	sentencia_break  goto 80
+	sentencia_return  goto 81
+	sentencia_imprime  goto 82
+	sentencia_lee  goto 83
+	expresion  goto 84
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 63
+	sentencia_lee : SCAN . '(' ID ')' ';'  (63)
+
+	'('  shift 98
+	.  error
+
+
+state 64
+	sentencia_imprime : PRINT . '(' expresion ')' ';'  (62)
+
+	'('  shift 99
+	.  error
+
+
+state 65
+	sentencia_return : RETURN . ';'  (64)
+	sentencia_return : RETURN . expresion ';'  (65)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	';'  shift 100
+	.  error
+
+	expresion  goto 101
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 66
+	sentencia_if : IF . '(' expresion ')' sentencia sentencia_else  (47)
+
+	'('  shift 102
+	.  error
+
+
+state 67
+	factor : '-' . expresion  (105)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 103
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 68
+	factor : '!' . expresion  (104)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 104
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 69
+	factor : '(' . expresion ')'  (98)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 105
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 70
+	bloque : '{' declaraciones_locales lista_sentencias '}' .  (29)
+
+	.  reduce 29
+
+
+state 71
+	sentencia_exp : ';' .  (46)
+
+	.  reduce 46
+
+
+state 72
+	sentencia : bloque .  (42)
+
+	.  reduce 42
+
+
+state 73
+	lista_sentencias : lista_sentencias sentencia .  (32)
+
+	.  reduce 32
+
+
+state 74
+	sentencia : sentencia_exp .  (34)
+
+	.  reduce 34
+
+
+state 75
+	sentencia : sentencia_if .  (35)
+
+	.  reduce 35
+
+
+state 76
+	sentencia : sentencia_while .  (36)
+
+	.  reduce 36
+
+
+state 77
+	sentencia : sentencia_do .  (37)
+
+	.  reduce 37
+
+
+state 78
+	sentencia : sentencia_switch .  (38)
+
+	.  reduce 38
+
+
+state 79
+	sentencia : sentencia_for .  (39)
+
+	.  reduce 39
+
+
+state 80
+	sentencia : sentencia_break .  (40)
+
+	.  reduce 40
+
+
+state 81
+	sentencia : sentencia_return .  (41)
+
+	.  reduce 41
+
+
+state 82
+	sentencia : sentencia_imprime .  (43)
+
+	.  reduce 43
+
+
+state 83
+	sentencia : sentencia_lee .  (44)
+
+	.  reduce 44
+
+
+state 84
+	sentencia_exp : expresion . ';'  (45)
+
+	';'  shift 106
+	.  error
+
+
+state 85
+	expresion : variable . operador_asignacion expresion  (66)
+	factor : variable .  (96)
+
+	'='  shift 107
+	MASIGUAL  shift 108
+	MENOSIGUAL  shift 109
+	DIVIGUAL  shift 110
+	MULTIGUAL  shift 111
+	MODUIGUAL  shift 112
+	OR  reduce 96
+	AND  reduce 96
+	IGUAL  reduce 96
+	DIF  reduce 96
+	'<'  reduce 96
+	MENIGU  reduce 96
+	'>'  reduce 96
+	MAYIGU  reduce 96
+	'+'  reduce 96
+	'-'  reduce 96
+	'*'  reduce 96
+	'/'  reduce 96
+	'%'  reduce 96
+	')'  reduce 96
+	']'  reduce 96
+	';'  reduce 96
+	','  reduce 96
+
+	operador_asignacion  goto 113
+
+
+86: shift/reduce conflict (shift 114, reduce 67) on OR
+86: shift/reduce conflict (shift 115, reduce 67) on AND
+86: shift/reduce conflict (shift 116, reduce 67) on IGUAL
+86: shift/reduce conflict (shift 117, reduce 67) on DIF
+86: shift/reduce conflict (shift 118, reduce 67) on '<'
+86: shift/reduce conflict (shift 119, reduce 67) on MENIGU
+86: shift/reduce conflict (shift 120, reduce 67) on '>'
+86: shift/reduce conflict (shift 121, reduce 67) on MAYIGU
+state 86
+	expresion : expresion_simple .  (67)
+	expresion_simple : expresion_simple . operador_relacional operando  (76)
+	expresion_simple : expresion_simple . operador_logico operando  (77)
+
+	OR  shift 114
+	AND  shift 115
+	IGUAL  shift 116
+	DIF  shift 117
+	'<'  shift 118
+	MENIGU  shift 119
+	'>'  shift 120
+	MAYIGU  shift 121
+	'+'  reduce 67
+	'-'  reduce 67
+	'*'  reduce 67
+	'/'  reduce 67
+	'%'  reduce 67
+	')'  reduce 67
+	']'  reduce 67
+	';'  reduce 67
+	','  reduce 67
+
+	operador_relacional  goto 122
+	operador_logico  goto 123
+
+
+87: shift/reduce conflict (shift 124, reduce 78) on '+'
+87: shift/reduce conflict (shift 125, reduce 78) on '-'
+state 87
+	expresion_simple : operando .  (78)
+	operando : operando . operador_adicion termino  (87)
+
+	'+'  shift 124
+	'-'  shift 125
+	OR  reduce 78
+	AND  reduce 78
+	IGUAL  reduce 78
+	DIF  reduce 78
+	'<'  reduce 78
+	MENIGU  reduce 78
+	'>'  reduce 78
+	MAYIGU  reduce 78
+	'*'  reduce 78
+	'/'  reduce 78
+	'%'  reduce 78
+	')'  reduce 78
+	']'  reduce 78
+	';'  reduce 78
+	','  reduce 78
+
+	operador_adicion  goto 126
+
+
+88: shift/reduce conflict (shift 127, reduce 88) on '*'
+88: shift/reduce conflict (shift 128, reduce 88) on '/'
+88: shift/reduce conflict (shift 129, reduce 88) on '%'
+state 88
+	operando : termino .  (88)
+	termino : termino . operador_mul factor  (91)
+
+	'*'  shift 127
+	'/'  shift 128
+	'%'  shift 129
+	OR  reduce 88
+	AND  reduce 88
+	IGUAL  reduce 88
+	DIF  reduce 88
+	'<'  reduce 88
+	MENIGU  reduce 88
+	'>'  reduce 88
+	MAYIGU  reduce 88
+	'+'  reduce 88
+	'-'  reduce 88
+	')'  reduce 88
+	']'  reduce 88
+	';'  reduce 88
+	','  reduce 88
+
+	operador_mul  goto 130
+
+
+state 89
+	termino : factor .  (92)
+
+	.  reduce 92
+
+
+state 90
+	factor : llamada .  (97)
+
+	.  reduce 97
+
+
+state 91
+	llamada : ID '(' . argumentos ')'  (106)
+	argumentos : .  (108)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	')'  reduce 108
+
+	expresion  goto 131
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+	argumentos  goto 132
+	lista_argumentos  goto 133
+
+
+state 92
+	variable : ID '[' . expresion ']'  (75)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 134
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 93
+	sentencia_for : FOR '(' . expresion ';' expresion ';' sentencia_incremento ')' sentencia  (58)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 135
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 94
+	sentencia_while : WHILE '(' . expresion ')' sentencia  (50)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 136
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 95
+	sentencia_switch : SWITCH '(' . ID ')' '{' lista_casos case_default '}'  (52)
+
+	ID  shift 137
+	.  error
+
+
+state 96
+	sentencia_break : BREAK ';' .  (59)
+
+	.  reduce 59
+
+
+state 97
+	sentencia_do : DO sentencia . WHILE '(' expresion ')' ';'  (51)
+
+	WHILE  shift 138
+	.  error
+
+
+state 98
+	sentencia_lee : SCAN '(' . ID ')' ';'  (63)
+
+	ID  shift 139
+	.  error
+
+
+state 99
+	sentencia_imprime : PRINT '(' . expresion ')' ';'  (62)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 140
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 100
+	sentencia_return : RETURN ';' .  (64)
+
+	.  reduce 64
+
+
+state 101
+	sentencia_return : RETURN expresion . ';'  (65)
+
+	';'  shift 141
+	.  error
+
+
+state 102
+	sentencia_if : IF '(' . expresion ')' sentencia sentencia_else  (47)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 142
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 103
+	factor : '-' expresion .  (105)
+
+	.  reduce 105
+
+
+state 104
+	factor : '!' expresion .  (104)
+
+	.  reduce 104
+
+
+state 105
+	factor : '(' expresion . ')'  (98)
+
+	')'  shift 143
+	.  error
+
+
+state 106
+	sentencia_exp : expresion ';' .  (45)
+
+	.  reduce 45
+
+
+state 107
+	operador_asignacion : '=' .  (68)
+
+	.  reduce 68
+
+
+state 108
+	operador_asignacion : MASIGUAL .  (69)
+
+	.  reduce 69
+
+
+state 109
+	operador_asignacion : MENOSIGUAL .  (70)
+
+	.  reduce 70
+
+
+state 110
+	operador_asignacion : DIVIGUAL .  (72)
+
+	.  reduce 72
+
+
+state 111
+	operador_asignacion : MULTIGUAL .  (71)
+
+	.  reduce 71
+
+
+state 112
+	operador_asignacion : MODUIGUAL .  (73)
+
+	.  reduce 73
+
+
+state 113
+	expresion : variable operador_asignacion . expresion  (66)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 144
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 114
+	operador_logico : OR .  (80)
+
+	.  reduce 80
+
+
+state 115
+	operador_logico : AND .  (79)
+
+	.  reduce 79
+
+
+state 116
+	operador_relacional : IGUAL .  (85)
+
+	.  reduce 85
+
+
+state 117
+	operador_relacional : DIF .  (86)
+
+	.  reduce 86
+
+
+state 118
+	operador_relacional : '<' .  (83)
+
+	.  reduce 83
+
+
+state 119
+	operador_relacional : MENIGU .  (81)
+
+	.  reduce 81
+
+
+state 120
+	operador_relacional : '>' .  (84)
+
+	.  reduce 84
+
+
+state 121
+	operador_relacional : MAYIGU .  (82)
+
+	.  reduce 82
+
+
+state 122
+	expresion_simple : expresion_simple operador_relacional . operando  (76)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	variable  goto 145
+	operando  goto 146
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 123
+	expresion_simple : expresion_simple operador_logico . operando  (77)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	variable  goto 145
+	operando  goto 147
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 124
+	operador_adicion : '+' .  (89)
+
+	.  reduce 89
+
+
+state 125
+	operador_adicion : '-' .  (90)
+
+	.  reduce 90
+
+
+state 126
+	operando : operando operador_adicion . termino  (87)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	variable  goto 145
+	termino  goto 148
+	factor  goto 89
+	llamada  goto 90
+
+
+state 127
+	operador_mul : '*' .  (93)
+
+	.  reduce 93
+
+
+state 128
+	operador_mul : '/' .  (94)
+
+	.  reduce 94
+
+
+state 129
+	operador_mul : '%' .  (95)
+
+	.  reduce 95
+
+
+state 130
+	termino : termino operador_mul . factor  (91)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	variable  goto 145
+	factor  goto 149
+	llamada  goto 90
+
+
+state 131
+	lista_argumentos : expresion .  (110)
+
+	.  reduce 110
+
+
+state 132
+	llamada : ID '(' argumentos . ')'  (106)
+
+	')'  shift 150
+	.  error
+
+
+state 133
+	argumentos : lista_argumentos .  (107)
+	lista_argumentos : lista_argumentos . ',' expresion  (109)
+
+	','  shift 151
+	')'  reduce 107
+
+
+state 134
+	variable : ID '[' expresion . ']'  (75)
+
+	']'  shift 152
+	.  error
+
+
+state 135
+	sentencia_for : FOR '(' expresion . ';' expresion ';' sentencia_incremento ')' sentencia  (58)
+
+	';'  shift 153
+	.  error
+
+
+state 136
+	sentencia_while : WHILE '(' expresion . ')' sentencia  (50)
+
+	')'  shift 154
+	.  error
+
+
+state 137
+	sentencia_switch : SWITCH '(' ID . ')' '{' lista_casos case_default '}'  (52)
+
+	')'  shift 155
+	.  error
+
+
+state 138
+	sentencia_do : DO sentencia WHILE . '(' expresion ')' ';'  (51)
+
+	'('  shift 156
+	.  error
+
+
+state 139
+	sentencia_lee : SCAN '(' ID . ')' ';'  (63)
+
+	')'  shift 157
+	.  error
+
+
+state 140
+	sentencia_imprime : PRINT '(' expresion . ')' ';'  (62)
+
+	')'  shift 158
+	.  error
+
+
+state 141
+	sentencia_return : RETURN expresion ';' .  (65)
+
+	.  reduce 65
+
+
+state 142
+	sentencia_if : IF '(' expresion . ')' sentencia sentencia_else  (47)
+
+	')'  shift 159
+	.  error
+
+
+state 143
+	factor : '(' expresion ')' .  (98)
+
+	.  reduce 98
+
+
+state 144
+	expresion : variable operador_asignacion expresion .  (66)
+
+	.  reduce 66
+
+
+state 145
+	factor : variable .  (96)
+
+	.  reduce 96
+
+
+146: shift/reduce conflict (shift 124, reduce 76) on '+'
+146: shift/reduce conflict (shift 125, reduce 76) on '-'
+state 146
+	expresion_simple : expresion_simple operador_relacional operando .  (76)
+	operando : operando . operador_adicion termino  (87)
+
+	'+'  shift 124
+	'-'  shift 125
+	OR  reduce 76
+	AND  reduce 76
+	IGUAL  reduce 76
+	DIF  reduce 76
+	'<'  reduce 76
+	MENIGU  reduce 76
+	'>'  reduce 76
+	MAYIGU  reduce 76
+	'*'  reduce 76
+	'/'  reduce 76
+	'%'  reduce 76
+	')'  reduce 76
+	']'  reduce 76
+	';'  reduce 76
+	','  reduce 76
+
+	operador_adicion  goto 126
+
+
+147: shift/reduce conflict (shift 124, reduce 77) on '+'
+147: shift/reduce conflict (shift 125, reduce 77) on '-'
+state 147
+	expresion_simple : expresion_simple operador_logico operando .  (77)
+	operando : operando . operador_adicion termino  (87)
+
+	'+'  shift 124
+	'-'  shift 125
+	OR  reduce 77
+	AND  reduce 77
+	IGUAL  reduce 77
+	DIF  reduce 77
+	'<'  reduce 77
+	MENIGU  reduce 77
+	'>'  reduce 77
+	MAYIGU  reduce 77
+	'*'  reduce 77
+	'/'  reduce 77
+	'%'  reduce 77
+	')'  reduce 77
+	']'  reduce 77
+	';'  reduce 77
+	','  reduce 77
+
+	operador_adicion  goto 126
+
+
+148: shift/reduce conflict (shift 127, reduce 87) on '*'
+148: shift/reduce conflict (shift 128, reduce 87) on '/'
+148: shift/reduce conflict (shift 129, reduce 87) on '%'
+state 148
+	operando : operando operador_adicion termino .  (87)
+	termino : termino . operador_mul factor  (91)
+
+	'*'  shift 127
+	'/'  shift 128
+	'%'  shift 129
+	OR  reduce 87
+	AND  reduce 87
+	IGUAL  reduce 87
+	DIF  reduce 87
+	'<'  reduce 87
+	MENIGU  reduce 87
+	'>'  reduce 87
+	MAYIGU  reduce 87
+	'+'  reduce 87
+	'-'  reduce 87
+	')'  reduce 87
+	']'  reduce 87
+	';'  reduce 87
+	','  reduce 87
+
+	operador_mul  goto 130
+
+
+state 149
+	termino : termino operador_mul factor .  (91)
+
+	.  reduce 91
+
+
+state 150
+	llamada : ID '(' argumentos ')' .  (106)
+
+	.  reduce 106
+
+
+state 151
+	lista_argumentos : lista_argumentos ',' . expresion  (109)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 160
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 152
+	variable : ID '[' expresion ']' .  (75)
+
+	.  reduce 75
+
+
+state 153
+	sentencia_for : FOR '(' expresion ';' . expresion ';' sentencia_incremento ')' sentencia  (58)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 161
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 154
+	sentencia_while : WHILE '(' expresion ')' . sentencia  (50)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	FOR  shift 58
+	WHILE  shift 59
+	SWITCH  shift 60
+	BREAK  shift 61
+	DO  shift 62
+	SCAN  shift 63
+	PRINT  shift 64
+	RETURN  shift 65
+	IF  shift 66
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	'{'  shift 45
+	';'  shift 71
+	.  error
+
+	bloque  goto 72
+	sentencia  goto 162
+	sentencia_exp  goto 74
+	sentencia_if  goto 75
+	sentencia_while  goto 76
+	sentencia_do  goto 77
+	sentencia_switch  goto 78
+	sentencia_for  goto 79
+	sentencia_break  goto 80
+	sentencia_return  goto 81
+	sentencia_imprime  goto 82
+	sentencia_lee  goto 83
+	expresion  goto 84
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 155
+	sentencia_switch : SWITCH '(' ID ')' . '{' lista_casos case_default '}'  (52)
+
+	'{'  shift 163
+	.  error
+
+
+state 156
+	sentencia_do : DO sentencia WHILE '(' . expresion ')' ';'  (51)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	.  error
+
+	expresion  goto 164
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 157
+	sentencia_lee : SCAN '(' ID ')' . ';'  (63)
+
+	';'  shift 165
+	.  error
+
+
+state 158
+	sentencia_imprime : PRINT '(' expresion ')' . ';'  (62)
+
+	';'  shift 166
+	.  error
+
+
+state 159
+	sentencia_if : IF '(' expresion ')' . sentencia sentencia_else  (47)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	FOR  shift 58
+	WHILE  shift 59
+	SWITCH  shift 60
+	BREAK  shift 61
+	DO  shift 62
+	SCAN  shift 63
+	PRINT  shift 64
+	RETURN  shift 65
+	IF  shift 66
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	'{'  shift 45
+	';'  shift 71
+	.  error
+
+	bloque  goto 72
+	sentencia  goto 167
+	sentencia_exp  goto 74
+	sentencia_if  goto 75
+	sentencia_while  goto 76
+	sentencia_do  goto 77
+	sentencia_switch  goto 78
+	sentencia_for  goto 79
+	sentencia_break  goto 80
+	sentencia_return  goto 81
+	sentencia_imprime  goto 82
+	sentencia_lee  goto 83
+	expresion  goto 84
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 160
+	lista_argumentos : lista_argumentos ',' expresion .  (109)
+
+	.  reduce 109
+
+
+state 161
+	sentencia_for : FOR '(' expresion ';' expresion . ';' sentencia_incremento ')' sentencia  (58)
+
+	';'  shift 168
+	.  error
+
+
+state 162
+	sentencia_while : WHILE '(' expresion ')' sentencia .  (50)
+
+	.  reduce 50
+
+
+state 163
+	sentencia_switch : SWITCH '(' ID ')' '{' . lista_casos case_default '}'  (52)
+
+	CASE  shift 169
+	.  error
+
+	lista_casos  goto 170
+	sentencia_case  goto 171
+
+
+state 164
+	sentencia_do : DO sentencia WHILE '(' expresion . ')' ';'  (51)
+
+	')'  shift 172
+	.  error
+
+
+state 165
+	sentencia_lee : SCAN '(' ID ')' ';' .  (63)
+
+	.  reduce 63
+
+
+state 166
+	sentencia_imprime : PRINT '(' expresion ')' ';' .  (62)
+
+	.  reduce 62
+
+
+167: shift/reduce conflict (shift 173, reduce 49) on ELSE
+state 167
+	sentencia_if : IF '(' expresion ')' sentencia . sentencia_else  (47)
+	sentencia_else : .  (49)
+
+	ELSE  shift 173
+	REAL  reduce 49
+	DOBLE  reduce 49
+	ENTERO  reduce 49
+	CADENA  reduce 49
+	ID  reduce 49
+	CARACTER  reduce 49
+	FOR  reduce 49
+	WHILE  reduce 49
+	SWITCH  reduce 49
+	BREAK  reduce 49
+	DO  reduce 49
+	SCAN  reduce 49
+	PRINT  reduce 49
+	RETURN  reduce 49
+	IF  reduce 49
+	'-'  reduce 49
+	'!'  reduce 49
+	'('  reduce 49
+	'{'  reduce 49
+	'}'  reduce 49
+	';'  reduce 49
+
+	sentencia_else  goto 174
+
+
+state 168
+	sentencia_for : FOR '(' expresion ';' expresion ';' . sentencia_incremento ')' sentencia  (58)
+
+	ID  shift 175
+	.  error
+
+	sentencia_incremento  goto 176
+
+
+state 169
+	sentencia_case : CASE . ENTERO ':' sentencia sentencia_break  (55)
+
+	ENTERO  shift 177
+	.  error
+
+
+state 170
+	sentencia_switch : SWITCH '(' ID ')' '{' lista_casos . case_default '}'  (52)
+	lista_casos : lista_casos . sentencia_case  (53)
+	case_default : .  (57)
+
+	CASE  shift 169
+	DEFAULT  shift 178
+	'}'  reduce 57
+
+	case_default  goto 179
+	sentencia_case  goto 180
+
+
+state 171
+	lista_casos : sentencia_case .  (54)
+
+	.  reduce 54
+
+
+state 172
+	sentencia_do : DO sentencia WHILE '(' expresion ')' . ';'  (51)
+
+	';'  shift 181
+	.  error
+
+
+state 173
+	sentencia_else : ELSE . sentencia  (48)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	FOR  shift 58
+	WHILE  shift 59
+	SWITCH  shift 60
+	BREAK  shift 61
+	DO  shift 62
+	SCAN  shift 63
+	PRINT  shift 64
+	RETURN  shift 65
+	IF  shift 66
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	'{'  shift 45
+	';'  shift 71
+	.  error
+
+	bloque  goto 72
+	sentencia  goto 182
+	sentencia_exp  goto 74
+	sentencia_if  goto 75
+	sentencia_while  goto 76
+	sentencia_do  goto 77
+	sentencia_switch  goto 78
+	sentencia_for  goto 79
+	sentencia_break  goto 80
+	sentencia_return  goto 81
+	sentencia_imprime  goto 82
+	sentencia_lee  goto 83
+	expresion  goto 84
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 174
+	sentencia_if : IF '(' expresion ')' sentencia sentencia_else .  (47)
+
+	.  reduce 47
+
+
+state 175
+	sentencia_incremento : ID . INC  (60)
+	sentencia_incremento : ID . DEC  (61)
+
+	INC  shift 183
+	DEC  shift 184
+	.  error
+
+
+state 176
+	sentencia_for : FOR '(' expresion ';' expresion ';' sentencia_incremento . ')' sentencia  (58)
+
+	')'  shift 185
+	.  error
+
+
+state 177
+	sentencia_case : CASE ENTERO . ':' sentencia sentencia_break  (55)
+
+	':'  shift 186
+	.  error
+
+
+state 178
+	case_default : DEFAULT . ':' sentencia sentencia_break  (56)
+
+	':'  shift 187
+	.  error
+
+
+state 179
+	sentencia_switch : SWITCH '(' ID ')' '{' lista_casos case_default . '}'  (52)
+
+	'}'  shift 188
+	.  error
+
+
+state 180
+	lista_casos : lista_casos sentencia_case .  (53)
+
+	.  reduce 53
+
+
+state 181
+	sentencia_do : DO sentencia WHILE '(' expresion ')' ';' .  (51)
+
+	.  reduce 51
+
+
+state 182
+	sentencia_else : ELSE sentencia .  (48)
+
+	.  reduce 48
+
+
+state 183
+	sentencia_incremento : ID INC .  (60)
+
+	.  reduce 60
+
+
+state 184
+	sentencia_incremento : ID DEC .  (61)
+
+	.  reduce 61
+
+
+state 185
+	sentencia_for : FOR '(' expresion ';' expresion ';' sentencia_incremento ')' . sentencia  (58)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	FOR  shift 58
+	WHILE  shift 59
+	SWITCH  shift 60
+	BREAK  shift 61
+	DO  shift 62
+	SCAN  shift 63
+	PRINT  shift 64
+	RETURN  shift 65
+	IF  shift 66
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	'{'  shift 45
+	';'  shift 71
+	.  error
+
+	bloque  goto 72
+	sentencia  goto 189
+	sentencia_exp  goto 74
+	sentencia_if  goto 75
+	sentencia_while  goto 76
+	sentencia_do  goto 77
+	sentencia_switch  goto 78
+	sentencia_for  goto 79
+	sentencia_break  goto 80
+	sentencia_return  goto 81
+	sentencia_imprime  goto 82
+	sentencia_lee  goto 83
+	expresion  goto 84
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 186
+	sentencia_case : CASE ENTERO ':' . sentencia sentencia_break  (55)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	FOR  shift 58
+	WHILE  shift 59
+	SWITCH  shift 60
+	BREAK  shift 61
+	DO  shift 62
+	SCAN  shift 63
+	PRINT  shift 64
+	RETURN  shift 65
+	IF  shift 66
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	'{'  shift 45
+	';'  shift 71
+	.  error
+
+	bloque  goto 72
+	sentencia  goto 190
+	sentencia_exp  goto 74
+	sentencia_if  goto 75
+	sentencia_while  goto 76
+	sentencia_do  goto 77
+	sentencia_switch  goto 78
+	sentencia_for  goto 79
+	sentencia_break  goto 80
+	sentencia_return  goto 81
+	sentencia_imprime  goto 82
+	sentencia_lee  goto 83
+	expresion  goto 84
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 187
+	case_default : DEFAULT ':' . sentencia sentencia_break  (56)
+
+	REAL  shift 52
+	DOBLE  shift 53
+	ENTERO  shift 54
+	CADENA  shift 55
+	ID  shift 56
+	CARACTER  shift 57
+	FOR  shift 58
+	WHILE  shift 59
+	SWITCH  shift 60
+	BREAK  shift 61
+	DO  shift 62
+	SCAN  shift 63
+	PRINT  shift 64
+	RETURN  shift 65
+	IF  shift 66
+	'-'  shift 67
+	'!'  shift 68
+	'('  shift 69
+	'{'  shift 45
+	';'  shift 71
+	.  error
+
+	bloque  goto 72
+	sentencia  goto 191
+	sentencia_exp  goto 74
+	sentencia_if  goto 75
+	sentencia_while  goto 76
+	sentencia_do  goto 77
+	sentencia_switch  goto 78
+	sentencia_for  goto 79
+	sentencia_break  goto 80
+	sentencia_return  goto 81
+	sentencia_imprime  goto 82
+	sentencia_lee  goto 83
+	expresion  goto 84
+	variable  goto 85
+	expresion_simple  goto 86
+	operando  goto 87
+	termino  goto 88
+	factor  goto 89
+	llamada  goto 90
+
+
+state 188
+	sentencia_switch : SWITCH '(' ID ')' '{' lista_casos case_default '}' .  (52)
+
+	.  reduce 52
+
+
+state 189
+	sentencia_for : FOR '(' expresion ';' expresion ';' sentencia_incremento ')' sentencia .  (58)
+
+	.  reduce 58
+
+
+state 190
+	sentencia_case : CASE ENTERO ':' sentencia . sentencia_break  (55)
+
+	BREAK  shift 61
+	.  error
+
+	sentencia_break  goto 192
+
+
+state 191
+	case_default : DEFAULT ':' sentencia . sentencia_break  (56)
+
+	BREAK  shift 61
+	.  error
+
+	sentencia_break  goto 193
+
+
+state 192
+	sentencia_case : CASE ENTERO ':' sentencia sentencia_break .  (55)
+
+	.  reduce 55
+
+
+state 193
+	case_default : DEFAULT ':' sentencia sentencia_break .  (56)
+
+	.  reduce 56
+
+
+State 86 contains 8 shift/reduce conflicts.
+State 87 contains 2 shift/reduce conflicts.
+State 88 contains 3 shift/reduce conflicts.
+State 146 contains 2 shift/reduce conflicts.
+State 147 contains 2 shift/reduce conflicts.
+State 148 contains 3 shift/reduce conflicts.
+State 167 contains 1 shift/reduce conflict.
+
+
+57 terminals, 47 nonterminals
+111 grammar rules, 194 states
